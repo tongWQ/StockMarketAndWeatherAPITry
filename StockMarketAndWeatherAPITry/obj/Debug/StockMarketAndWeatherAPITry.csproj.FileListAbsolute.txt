@@ -1,0 +1,3 @@
+D:\Projects\jsonWeatherAPItry\StockMarketAndWeatherAPITry\bin\Debug\StockMarketAndWeatherAPITry.exe.config
+D:\Projects\jsonWeatherAPItry\StockMarketAndWeatherAPITry\obj\Debug\StockMarketAndWeatherAPITry.exe
+D:\Projects\jsonWeatherAPItry\StockMarketAndWeatherAPITry\obj\Debug\StockMarketAndWeatherAPITry.pdb
