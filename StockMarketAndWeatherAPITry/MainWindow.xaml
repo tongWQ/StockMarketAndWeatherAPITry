@@ -35,7 +35,7 @@
 
         </DatePicker>
         <TextBlock x:Name="textBlockUserKey" HorizontalAlignment="Left" TextWrapping="Wrap" Text="UserKey:" VerticalAlignment="Top" Margin="10,70,0,0" Height="24" Width="66"/>
-        <TextBox x:Name="textBoxUserKey" HorizontalAlignment="Left" Height="22" TextWrapping="Wrap" Text="291072bc56234a6aa952625adccee3bc" VerticalAlignment="Top" Width="343" Margin="115,69,0,0"/>
+        <TextBox x:Name="textBoxUserKey" HorizontalAlignment="Left" Height="22" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="343" Margin="115,69,0,0"/>
         <Button x:Name="buttonSetAsDefault" Content="设为默认" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="463,69,0,0" Height="22" Click="buttonSetAsDefault_Click"/>
 
 
