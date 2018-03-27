@@ -13,7 +13,7 @@
         <TextBlock x:Name="textBlockTMPMax" Width="100" Height="50" Margin="360,10,254,382" VerticalAlignment="Top" HorizontalAlignment="Left" TextAlignment="Center" FontSize="30"></TextBlock>
         <TextBlock x:Name="textBlockTMPMin" Width="100" Height="50" Margin="176,10,438,382" VerticalAlignment="Top" HorizontalAlignment="Left" TextAlignment="Center" FontSize="30"></TextBlock>
         <TextBlock x:Name="textBlockInputStockID" Width="100" Text="输入股票代码" HorizontalAlignment="Left" VerticalAlignment="Top" TextAlignment="Justify" Margin="10,99,0,0" Height="24"/>
-        <TextBox x:Name="textBoxStockID" Height="25" Width="179" VerticalAlignment="Top" HorizontalAlignment="Left"  Text="60000" Margin="176,98,0,0"/>
+        <TextBox x:Name="textBoxStockID" Height="25" Width="179" VerticalAlignment="Top" HorizontalAlignment="Left"  Text="6000" Margin="176,98,0,0"/>
         <Button x:Name="buttonSearch" Content="搜索" HorizontalAlignment="Left" Height="27" Margin="362,96,0,0" VerticalAlignment="Top" Width="98" Click="buttonSearch_Click" />
         <DatePicker x:Name="datePickerStart" HorizontalAlignment="Left" Height="24" Margin="10,139,0,0" VerticalAlignment="Top" Width="139" SelectedDateFormat="Short"/>
         <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Height="28" Margin="115,96,0,0" VerticalAlignment="Top" Width="56" SelectedIndex="0">
@@ -34,7 +34,7 @@
                             <DataGridTextColumn x:Name="dataGridTextColumnStockID" Header="股票代码" Width="*" Binding="{Binding StockID}"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <Button x:Name="buttonRefreshDataGridPreferred" Content="刷新" HorizontalAlignment="Left" Height="37" Margin="576,190,0,0" VerticalAlignment="Top" Width="102"/>
+                    <Button x:Name="buttonRefreshDataGridPreferred" Content="刷新" HorizontalAlignment="Left" Height="37" Margin="576,190,0,0" VerticalAlignment="Top" Width="102" Click="buttonRefreshDataGridPreferred_Click"/>
                 </Grid>
             </TabItem>
             <TabItem Header="数据">

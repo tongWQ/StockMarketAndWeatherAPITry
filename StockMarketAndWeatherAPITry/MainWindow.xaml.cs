@@ -103,6 +103,10 @@ namespace jsonWeatherAPItry
                 //textBlock5.Text = spilted[5];
                 //textBlock6.Text = spilted[6];
 
+                SelectedStock = new Stock();
+                SelectedStock.Type = comboBox.SelectedIndex;
+                SelectedStock.StockID = textBoxStockID.Text;
+
                 tabControl.SelectedIndex = 1;
                 textBlockCurrentStockID.Text = "当前股票号码: " + SelectedStock.StockID.ToString();
                 dataGridStockData.ItemsSource = GetData(JObj);
@@ -306,6 +310,11 @@ namespace jsonWeatherAPItry
         private void hyperLinkAuthorsGitHub_Click(object sender, RoutedEventArgs e)
         {
             System.Diagnostics.Process.Start("https://github.com/tongWQ/StockMarketAndWeatherAPITry");
+        }
+
+        private void buttonRefreshDataGridPreferred_Click(object sender, RoutedEventArgs e)
+        {   
+            dataGridPreferred.ItemsSource = GetPreferredStock();
         }
     }
 
