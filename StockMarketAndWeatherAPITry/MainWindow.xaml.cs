@@ -38,28 +38,14 @@ namespace jsonWeatherAPItry
         public string t = "1477455132";
 
         public string link = "https://free-api.heweather.com/s6/weather/forecast?";
+
+        string basicStockMarketUrl = "http://stock.liangyee.com/bus-api/stock/freeStockMarketData/getDailyKBar?";
+
+
+        private Stock SelectedStock;
         public MainWindow()
         {
-            string url = link + "location=" + location + "&key="+key;
-
-            string responsed = GetHttpResponse(url,5000);
-
-        //    string jsonResult = System.Text.RegularExpressions.Regex.Replace(responsed, "[\\]", "");
-
-            JObject JObj = JObject.Parse(responsed);
-
-            string city = (string)JObj["HeWeather6"][0]["basic"]["location"];
-
-            string highTmp = (string)JObj["HeWeather6"][0]["daily_forecast"][0]["tmp_max"];
-
-            string lowTmp = (string)JObj["HeWeather6"][0]["daily_forecast"][0]["tmp_min"];
-
-            InitializeComponent();
-
-            textBlockLocation.Text = city;
-            textBlockTMPMax.Text = highTmp+"°C";
-            textBlockTMPMin.Text = lowTmp + "°C";
-            textBoxUserKey.Text = GetUserKey();
+            InitializeComponent();   
         }
 
         public static string GetHttpResponse(string url, int Timeout)
@@ -82,24 +68,29 @@ namespace jsonWeatherAPItry
 
         private void buttonSearch_Click(object sender, RoutedEventArgs e)
         {
-            string basicUrl = "http://stock.liangyee.com/bus-api/stock/freeStockMarketData/getDailyKBar?";
           //  string userKey = "userKey=291072bc56234a6aa952625adccee3bc&";
-            string userKey = "userKey="+textBoxUserKey.Text+"&";
-
-            string symbol = "symbol=" + textBoxStockID.Text + "&";
-            string startDate = "startDate=" + datePickerStart.SelectedDate.Value.ToString("yyyy-MM-dd") + "&";
-      
-            string endDate = "endDate=" + datePickerEnd.SelectedDate.Value.ToString("yyyy-MM-dd") + "&";
-
-            TimeSpan t1 = new TimeSpan(datePickerStart.SelectedDate.Value.Ticks);
-            TimeSpan t2 = new TimeSpan(datePickerEnd.SelectedDate.Value.Ticks);
-            TimeSpan span = t1.Subtract(t2).Duration();
-
-            int days = span.Days;
-            string type = "type="+comboBox.SelectedIndex.ToString();
-            string requestURLString = basicUrl + userKey + symbol + startDate + endDate + type;
+            if(textBoxUserKey.Text==string.Empty)
+            {
+                MessageBox.Show("请输入user key");
+                return;
+            }
             try
             {
+                string userKey = "userKey=" + textBoxUserKey.Text + "&";
+
+                string symbol = "symbol=" + textBoxStockID.Text + "&";
+                string startDate = "startDate=" + datePickerStart.SelectedDate.Value.ToString("yyyy-MM-dd") + "&";
+
+                string endDate = "endDate=" + datePickerEnd.SelectedDate.Value.ToString("yyyy-MM-dd") + "&";
+
+                TimeSpan t1 = new TimeSpan(datePickerStart.SelectedDate.Value.Ticks);
+                TimeSpan t2 = new TimeSpan(datePickerEnd.SelectedDate.Value.Ticks);
+                TimeSpan span = t1.Subtract(t2).Duration();
+
+                int days = span.Days;
+                string type = "type=" + comboBox.SelectedIndex.ToString();
+                string requestURLString = basicStockMarketUrl + userKey + symbol + startDate + endDate + type;
+
                 string responsed = GetHttpResponse(requestURLString, 5000);
                 JObject JObj = JObject.Parse(responsed);
                 //string resultString = (string)JObj["result"][0];
@@ -111,7 +102,10 @@ namespace jsonWeatherAPItry
                 //textBlock4.Text = spilted[4];
                 //textBlock5.Text = spilted[5];
                 //textBlock6.Text = spilted[6];
-                dataGrid.ItemsSource = GetData(JObj);
+
+                tabControl.SelectedIndex = 1;
+                textBlockCurrentStockID.Text = "当前股票号码: " + SelectedStock.StockID.ToString();
+                dataGridStockData.ItemsSource = GetData(JObj);
 
             }
             catch(Exception ex)
@@ -190,6 +184,33 @@ namespace jsonWeatherAPItry
 
         }
 
+        private Stock[] GetPreferredStock()
+        {
+            try
+            {
+                XmlDocument config = new XmlDocument();
+                config.Load(configPath);
+
+                string xPathPreferredStock = "//PreferredStock";
+                XmlNodeList nodeListPreferredStock = config.SelectNodes(xPathPreferredStock);
+                List<Stock> stockList = new List<Stock>();
+                foreach(XmlNode node in nodeListPreferredStock)
+                {
+                    Stock single = new Stock();
+                    single.Type = Convert.ToInt32(node.Attributes["type"].Value);
+                    single.StockID = node.InnerText;
+                    stockList.Add(single);
+                }
+
+                return stockList.ToArray<Stock>();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return null;
+            }
+        }
+
         private void SetDefaultUserKey(string toSet)
         {
             try
@@ -207,18 +228,89 @@ namespace jsonWeatherAPItry
             catch (Exception ex)
             {
                 MessageBox.Show("fail to set " + ex.Message);
-
             }
         }
+
+        private void AddPreferredStock(int type,string stockID)
+        {
+            XmlDocument config = new XmlDocument();
+            config.Load(configPath);
+            XmlElement root = config.DocumentElement;
+
+            XmlElement newStock = config.CreateElement("PreferredStock");
+            XmlAttribute stockTypeAttribute = config.CreateAttribute("type");
+            stockTypeAttribute.Value = type.ToString();
+            XmlText stockIDText = config.CreateTextNode(stockID);
+
+            newStock.Attributes.Append(stockTypeAttribute);
+            newStock.AppendChild(stockIDText);
+            root.InsertAfter(newStock, root.LastChild);
+
+            config.Save(configPath);
+        }
+
 
         private void buttonSetAsDefault_Click(object sender, RoutedEventArgs e)
         {
             SetDefaultUserKey(textBoxUserKey.Text);
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            string url = link + "location=" + location + "&key=" + key;
+
+            string responsed = GetHttpResponse(url, 5000);
+
+            //    string jsonResult = System.Text.RegularExpressions.Regex.Replace(responsed, "[\\]", "");
+
+            JObject JObj = JObject.Parse(responsed);
+
+            string city = (string)JObj["HeWeather6"][0]["basic"]["location"];
+
+            string highTmp = (string)JObj["HeWeather6"][0]["daily_forecast"][0]["tmp_max"];
+
+            string lowTmp = (string)JObj["HeWeather6"][0]["daily_forecast"][0]["tmp_min"];
+
+            textBlockLocation.Text = city;
+            textBlockTMPMax.Text = highTmp + "°C";
+            textBlockTMPMin.Text = lowTmp + "°C";
+            textBoxUserKey.Text = GetUserKey();
+
+            datePickerStart.Text = DateTime.Now.AddDays(-1).ToShortDateString();
+            datePickerEnd.Text = DateTime.Now.ToShortDateString();
+
+            dataGridPreferred.ItemsSource = GetPreferredStock();
+
+
+        }
+
+        private void dataGridPreferred_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SelectedStock = (Stock)dataGridPreferred.SelectedItem;
+            
+            comboBox.SelectedIndex = SelectedStock.Type;
+            textBoxStockID.Text = SelectedStock.StockID;
+
+        }
+
+        private void buttonAddPreferredStock_Click(object sender, RoutedEventArgs e)
+        {
+            AddPreferredStock(comboBox.SelectedIndex, textBoxStockID.Text);
+        }
+
+        private void HyperlinkGetFreeUserKey_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://www.liangyee.com/apiDetail/a1cc7246-c806-453b-9cbe-022b599360b8");
+        }
+
+        private void hyperLinkAuthorsGitHub_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/tongWQ/StockMarketAndWeatherAPITry");
+        }
     }
 
     public class StockData
-    {
+    { 
         public string TradeTime { get; set; }
         public double StartPrice { get; set; }
         public double HighestPrice { get; set; }
@@ -227,4 +319,12 @@ namespace jsonWeatherAPItry
         public int TradeValue { get; set; }
         public double ChangeRate { get; set; }
     }
+
+    public class Stock
+    {
+        public int Type { get; set; }
+        public string StockID { get; set; }
+        //public string StockName { get; set; }
+    }
+
 }

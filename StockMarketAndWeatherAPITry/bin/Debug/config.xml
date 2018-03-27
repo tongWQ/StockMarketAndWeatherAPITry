@@ -1,4 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <config>
   <UserKey></UserKey>
+  <PreferredStock type="0">600000</PreferredStock>
+  <PreferredStock type="0">600021</PreferredStock>
 </config>

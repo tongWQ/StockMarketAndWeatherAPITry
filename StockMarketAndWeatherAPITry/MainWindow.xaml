@@ -3,40 +3,64 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"  
         xmlns:local="clr-namespace:jsonWeatherAPItry"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="601.324">
+        Title="MainWindow" Height="473.361" Width="721.816" Loaded="Window_Loaded">
     <Grid>
-        <TextBlock x:Name="textBlockLocation" Height="50" Width="100" Margin="10,10,483,259" TextAlignment="Center" FontSize="30"></TextBlock>
-        <TextBlock x:Name="textBlockTo" Height="50" Width="50" Margin="215,10,328,259" Text="~" TextAlignment="Center" FontSize="30"></TextBlock>
-        <TextBlock x:Name="textBlockTMPMax" Width="100" Height="50" Margin="276,10,217,259" TextAlignment="Center" FontSize="30"></TextBlock>
-        <TextBlock x:Name="textBlockTMPMin" Width="100" Height="50" Margin="115,10,378,259" TextAlignment="Center" FontSize="30"></TextBlock>
+        <TextBlock x:Name="textBlockLocation" Height="50" Width="100" Margin="48,10,566,382" VerticalAlignment="Top" HorizontalAlignment="Left" TextAlignment="Center" FontSize="30"></TextBlock>
+        <TextBlock x:Name="textBlockTo" Height="50" Width="50" Margin="280,10,384,382" Text="~" VerticalAlignment="Top" HorizontalAlignment="Left" TextAlignment="Center" FontSize="30"></TextBlock>
+        <TextBlock x:Name="textBlockTMPMax" Width="100" Height="50" Margin="360,10,254,382" VerticalAlignment="Top" HorizontalAlignment="Left" TextAlignment="Center" FontSize="30"></TextBlock>
+        <TextBlock x:Name="textBlockTMPMin" Width="100" Height="50" Margin="176,10,438,382" VerticalAlignment="Top" HorizontalAlignment="Left" TextAlignment="Center" FontSize="30"></TextBlock>
         <TextBlock x:Name="textBlockInputStockID" Width="100" Text="输入股票代码" HorizontalAlignment="Left" VerticalAlignment="Top" TextAlignment="Justify" Margin="10,99,0,0" Height="24"/>
-        <TextBox x:Name="textBoxStockID" Height="30" Width="140" VerticalAlignment="Top" HorizontalAlignment="Left"  Text="60000" Margin="215,98,0,0"/>
-        <Button x:Name="buttonSearch" Content="Search" HorizontalAlignment="Left" Height="30" Margin="360,98,0,0" VerticalAlignment="Top" Width="98" Click="buttonSearch_Click"/>
-        <DatePicker x:Name="datePickerStart" HorizontalAlignment="Left" Height="24" Margin="10,139,0,0" VerticalAlignment="Top" Width="139"/>
-        <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Height="28" Margin="115,96,0,0" VerticalAlignment="Top" Width="81" SelectedIndex="0">
+        <TextBox x:Name="textBoxStockID" Height="25" Width="179" VerticalAlignment="Top" HorizontalAlignment="Left"  Text="60000" Margin="176,98,0,0"/>
+        <Button x:Name="buttonSearch" Content="搜索" HorizontalAlignment="Left" Height="27" Margin="362,96,0,0" VerticalAlignment="Top" Width="98" Click="buttonSearch_Click" />
+        <DatePicker x:Name="datePickerStart" HorizontalAlignment="Left" Height="24" Margin="10,139,0,0" VerticalAlignment="Top" Width="139" SelectedDateFormat="Short"/>
+        <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Height="28" Margin="115,96,0,0" VerticalAlignment="Top" Width="56" SelectedIndex="0">
             <ComboBoxItem>沪</ComboBoxItem>
             <ComboBoxItem>深</ComboBoxItem>
         </ComboBox>
-        <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" Height="141" Margin="10,168,0,0" VerticalAlignment="Top" Width="561" AutoGenerateColumns="False" IsReadOnly="True">
-            <DataGrid.Columns>
-                <DataGridTextColumn x:Name="dataGrdiTextColumnTradeTime" Header="交易时间" Binding="{Binding TradeTime}"/>
-                <DataGridTextColumn x:Name="dataGrdiTextColumnStartPrice" Header="开盘价" Binding="{Binding StartPrice}"/>
-                <DataGridTextColumn x:Name="dataGrdiTextColumnHighestPrice" Header="最高价" Binding="{Binding HighestPrice}"/>
-                <DataGridTextColumn x:Name="dataGrdiTextColumnLowestPrice" Header="最低价" Binding="{Binding LowestPrice}"/>
-                <DataGridTextColumn x:Name="dataGrdiTextColumnEndPrice" Header="收盘价" Binding="{Binding EndPrice}"/>
-                <DataGridTextColumn x:Name="dataGrdiTextColumnTradeValue" Header="成交量" Binding="{Binding TradeValue}"/>
-                <DataGridTextColumn x:Name="dataGrdiTextColumnChangeRate" Header="涨跌幅" Binding="{Binding ChangeRate}"/>
-            </DataGrid.Columns>
-        </DataGrid>
-        <TextBlock x:Name="textBlockto" HorizontalAlignment="Left" Height="20" Margin="175,143,0,0" TextWrapping="Wrap" Text="至" VerticalAlignment="Top" Width="40"/>
-        <DatePicker x:Name="datePickerEnd" HorizontalAlignment="Left" Height="24" Margin="215,139,0,0" VerticalAlignment="Top" Width="140">
-
-        </DatePicker>
+        <TextBlock x:Name="textBlockto" HorizontalAlignment="Left" Height="20" Margin="154,143,0,0" TextWrapping="Wrap" Text="至" VerticalAlignment="Top" Width="40"/>
+        <DatePicker x:Name="datePickerEnd" HorizontalAlignment="Left" Height="24" Margin="199,139,0,0" VerticalAlignment="Top" Width="140" SelectedDateFormat="Short"/>
         <TextBlock x:Name="textBlockUserKey" HorizontalAlignment="Left" TextWrapping="Wrap" Text="UserKey:" VerticalAlignment="Top" Margin="10,70,0,0" Height="24" Width="66"/>
         <TextBox x:Name="textBoxUserKey" HorizontalAlignment="Left" Height="22" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="343" Margin="115,69,0,0"/>
-        <Button x:Name="buttonSetAsDefault" Content="设为默认" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="463,69,0,0" Height="22" Click="buttonSetAsDefault_Click"/>
+        <Button x:Name="buttonSetAsDefault" Content="设为默认" HorizontalAlignment="Left" VerticalAlignment="Top" Width="105" Margin="465,69,0,0" Height="22" Click="buttonSetAsDefault_Click"/>
+        <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="264" Margin="10,168,0,0" VerticalAlignment="Top" Width="694">
+            <TabItem Header="自选">
+                <Grid Background="#FFE5E5E5">
+                    <DataGrid x:Name="dataGridPreferred" HorizontalAlignment="Left" Height="175" VerticalAlignment="Top" Width="668" Margin="10,10,0,0" AutoGenerateColumns="False" IsReadOnly="True" SelectionChanged="dataGridPreferred_SelectionChanged">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn x:Name="dataGridTextColumnStockType" Header="类型 (0:沪,1:深)" Binding="{Binding Type}"/>
+                            <DataGridTextColumn x:Name="dataGridTextColumnStockID" Header="股票代码" Width="*" Binding="{Binding StockID}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Button x:Name="buttonRefreshDataGridPreferred" Content="刷新" HorizontalAlignment="Left" Height="37" Margin="576,190,0,0" VerticalAlignment="Top" Width="102"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="数据">
+                <Grid Background="#FFE5E5E5">
+                    <DataGrid x:Name="dataGridStockData" HorizontalAlignment="Left" Height="187" Margin="10,40,0,0" VerticalAlignment="Top" Width="668" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn x:Name="dataGrdiTextColumnTradeTime" Header="交易时间" Binding="{Binding TradeTime}"/>
+                            <DataGridTextColumn x:Name="dataGrdiTextColumnStartPrice" Header="开盘价" Binding="{Binding StartPrice}"/>
+                            <DataGridTextColumn x:Name="dataGrdiTextColumnHighestPrice" Header="最高价" Binding="{Binding HighestPrice}"/>
+                            <DataGridTextColumn x:Name="dataGrdiTextColumnLowestPrice" Header="最低价" Binding="{Binding LowestPrice}"/>
+                            <DataGridTextColumn x:Name="dataGrdiTextColumnEndPrice" Header="收盘价" Binding="{Binding EndPrice}"/>
+                            <DataGridTextColumn x:Name="dataGrdiTextColumnTradeValue" Header="成交量" Binding="{Binding TradeValue}"/>
+                            <DataGridTextColumn x:Name="dataGrdiTextColumnChangeRate" Header="涨跌幅" Binding="{Binding ChangeRate}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <TextBlock x:Name="textBlockCurrentStockID" HorizontalAlignment="Left" Height="25" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="250"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <Button x:Name="buttonAddPreferredStock" Content="添加自选" HorizontalAlignment="Left" Height="27" Margin="465,96,0,0" VerticalAlignment="Top" Width="105" Click="buttonAddPreferredStock_Click"/>
+        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Height="21" Margin="583,70,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="131">
+            <Hyperlink x:Name="hyperLinkGetFreeUserKey" NavigateUri="http://www.liangyee.com/apiDetail/a1cc7246-c806-453b-9cbe-022b599360b8" Click="HyperlinkGetFreeUserKey_Click">获取免费UserKey</Hyperlink>
+        </TextBlock>
+        <TextBlock x:Name="textBlockAuthorsGitHub" HorizontalAlignment="Left" TextWrapping="Wrap"  VerticalAlignment="Top" Margin="613,10,0,0" Width="91">
+            <Hyperlink x:Name="hyperLinkAuthorsGitHub" NavigateUri="https://github.com/tongWQ/StockMarketAndWeatherAPITry" Click="hyperLinkAuthorsGitHub_Click">本项目GitHub</Hyperlink>
+        </TextBlock>
 
 
 
